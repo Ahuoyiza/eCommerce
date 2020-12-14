@@ -1,4 +1,7 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+
 
 
   // Your web app's Firebase configuration
@@ -14,12 +17,12 @@ import * as firebase from 'firebase';
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  //firebase.analytics();
 
 
 //export
-export const auth  =firebase.auth();
+export  const auth  =firebase.auth();
 
-export const googleAuthProvider = new firebase.auth.googleAuthProvider;
+export const googleProvider = new firebase.auth.GoogleAuthProvider;
 
   
