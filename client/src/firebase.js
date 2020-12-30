@@ -16,13 +16,15 @@ import 'firebase/auth';
     measurementId: "G-N4CW78V8Z9"
   };
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+  }
   //firebase.analytics();
 
 
 //export
 export  const auth  =firebase.auth();
 
-export const googleProvider = new firebase.auth.GoogleAuthProvider;
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
 
   
