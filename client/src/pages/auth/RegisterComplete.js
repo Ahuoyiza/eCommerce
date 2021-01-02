@@ -8,25 +8,35 @@ import {toast} from 'react-toastify';
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
 
- useState(() =>  {
-    setEmail(window.localStorage.getItem("emailForRegisteration"))
+ useEffect(() =>  {
+    setEmail(window.localStorage.getItem("emailForRegisteration"));
+
+
+    //console.log(window.location.href);
+    //console.log(window.localStorage.getItem("emailForRegisteration"));
 
  }, [])
 
  const handleSubmit = async (e) => {
      e.preventDefault();
-     const  config = {
-        url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
-        handleCodeInApp: true
-     };
-     
-     await auth.sendSignInLinkToEmail(email, config)
-     toast.success(`Email is sent to ${email}. Click the link to complete your registeration.`);
+     try{
+        const result = await auth.signInWithEmailLink(email, window.location.href );
 
-     //save user email in local storage
-     window.localStorage.setItem('emailForRegisteration', email)
-     //clear state
-     setEmail("");
+        //console.log(("RESULT", result))
+        if(email.user.emailVerified) {
+            //remove  user emial from localstorage
+
+            //user id token
+
+            //redux store
+
+            //redirect
+        }
+     } catch (error){
+        console.log(error);
+        toast.error(error.message);
+     }
+     
  };
 
  const completeRegisterationForm = () => <form onSubmit= {handleSubmit} >
