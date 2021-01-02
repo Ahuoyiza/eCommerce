@@ -19,18 +19,33 @@ import {toast} from 'react-toastify';
 
  const handleSubmit = async (e) => {
      e.preventDefault();
+
+     //password validation
+
+    if(!email || !password){
+        toast.error('Email & password is required');
+        return;
+    }
+
+    if(password.length < 6){
+        toast.error('Password must be at least 6 characters long')
+        return;
+    }
      try{
         const result = await auth.signInWithEmailLink(email, window.location.href );
 
         //console.log(("RESULT", result))
         if(email.user.emailVerified) {
             //remove  user emial from localstorage
-
+            window.localStorage.removeItem("emailForRegisteration");
             //user id token
-
+            let user = auth.currentUser
+            await user.updatePassword(password);
+            const idTokenResult = await user.getIdTokenResult()
             //redux store
-
+            console.log('user', user, 'idTokenResult', idTokenResult)
             //redirect
+           // history.push('/')
         }
      } catch (error){
         console.log(error);
