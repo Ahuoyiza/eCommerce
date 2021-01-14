@@ -2,58 +2,53 @@ import React, {useState, useEffect} from 'react';
 import {auth} from '../../firebase';  
 import {toast} from 'react-toastify';
 
-
- const RegisterComplete = ({history}) => {
-
- const [email, setEmail] = useState('');
- const [password, setPassword] = useState('');
-
- useEffect(() =>  {
-    setEmail(window.localStorage.getItem("emailForRegisteration"));
-
-
-    //console.log(window.location.href);
-    //console.log(window.localStorage.getItem("emailForRegisteration"));
-
- }, [])
-
- const handleSubmit = async (e) => {
-     e.preventDefault();
-
-     //password validation
-
-    if(!email || !password){
-        toast.error('Email & password is required');
+const RegisterComplete = ({ history }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+  
+    useEffect(() => {
+      setEmail(window.localStorage.getItem("emailForRegistration"));
+      // console.log(window.location.href);
+      // console.log(window.localStorage.getItem("emailForRegistration"));
+    }, []);
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      // validation
+      if (!email || !password) {
+        toast.error("Email and password is required");
         return;
-    }
-
-    if(password.length < 6){
-        toast.error('Password must be at least 6 characters long')
+      }
+  
+      if (password.length < 6) {
+        toast.error("Password must be at least 6 characters long");
         return;
-    }
-     try{
-        const result = await auth.signInWithEmailLink(email, window.location.href );
-
-        //console.log(("RESULT", result))
-        if(email.user.emailVerified) {
-            //remove  user emial from localstorage
-            window.localStorage.removeItem("emailForRegisteration");
-            //user id token
-            let user = auth.currentUser
-            await user.updatePassword(password);
-            const idTokenResult = await user.getIdTokenResult()
-            //redux store
-            console.log('user', user, 'idTokenResult', idTokenResult)
-            //redirect
-           // history.push('/')
+      }
+  
+      try {
+        const result = await auth.signInWithEmailLink(
+          email,
+          window.location.href
+        );
+        //   console.log("RESULT", result);
+        if (result.user.emailVerified) {
+          // remove user email fom local storage
+          window.localStorage.removeItem("emailForRegistration");
+          // get user id token
+          let user = auth.currentUser;
+          await user.updatePassword(password);
+          const idTokenResult = await user.getIdTokenResult();
+          // redux store
+          console.log("user", user, "idTokenResult", idTokenResult);
+          // redirect
+          history.push("/");
         }
-     } catch (error){
+      } catch (error) {
         console.log(error);
         toast.error(error.message);
-     }
-     
- };
-
+      }
+    };
+ 
  const completeRegisterationForm = () => <form onSubmit= {handleSubmit} >
         <input 
         type="email" 
