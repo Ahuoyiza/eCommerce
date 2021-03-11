@@ -30,6 +30,7 @@ import {toast} from 'react-toastify';
         value={email} 
         onChange={e =>setEmail(e.target.value)}
         autoFocus
+        autoComplete
         />
         <button 
         type="submit"
